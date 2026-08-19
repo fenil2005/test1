@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promises</title>
+    <style>
+        .photosimg{
+            display: flex;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        img{
+            height: 150px;
+            width: 200px;
+        }
+    </style>
+    <!-- <style>
+        .photosinfo{
+            display: flex;
+            flex-direction: column;
+        }
+    </style> -->
+</head>
+<body>
+    <section>
+        <div id="photoimage" class="photosimg">
+
+        </div>
+    </section>
+    <!-- <section>
+        <div id="alldata" class="photosinfo">
+
+        </div>
+    </section> -->
+</body>
+</html>
+<script>
+    // // const myPromise = new Promise((resolve, reject)=>{
+    
+// // })
+
+
+// getUser(users,function(user){
+//     getorders(user.id, function(order){
+//         getInvoice(orders,function(invoice){
+//             sendMobile(invoice, function(result){
+//                 console.log("success")
+//             })
+//         })
+//     })
+// })
+
+// getUser(userId)
+// .then(user=>getOrders(user.id))
+// .then(orders=> getInvoice(order.id))
+// .then(invoice=>sendMobile(invoice))
+// .then(()=>console.log("success"))
+
+
+// .catch(err=>console.log(err))
+
+// console.log("1-before promise");
+
+// const p = new Promise((resolve,reject)=>{
+//     console.log("2- start promise");
+//     setTimeout(()=>{
+//         // resolve();
+//         console.log("3-resolve called")
+//     },5000)
+// })
+
+// p.then(val=>console.log("4- then call",val));
+// p.catch(err=>console.error(err))
+
+// console.log("5- final call")
+
+// const myPromise = new Promise((resolve,reject)=>{
+//     const success = false;
+
+//     if(success){
+//         resolve('success')
+//     } else{
+//         reject(new Error("error"))
+//     }
+// })
+
+// console.log(myPromise)
+
+// fetch('https://jsonplaceholder.typicode.com/users')
+//       .then(response=>{
+//         if(!response.ok) throw new Error(console.log("response failed"))
+//             return response.json()
+//       })
+//       .then(user=>{
+//         console.log(user.map((data)=>console.log(data.company.name)))
+//       })
+//       .catch(err=>console.error(err))
+
+// fetch('https://jsonplaceholder.typicode.com/comments')
+//       .then(response=>{
+//         if(!response.ok) throw new Error(console.log("response failed"))
+//             return response.json()
+//       })
+//       .then(comments=>{
+//         console.log(comments.map((data)=>console.log(data.body)))
+//       })
+//       .catch(err=>console.error(err))
+
+
+// fetch('https://jsonplaceholder.typicode.com/users')
+//     .then(response=>{
+//         if(!response.ok) throw new Error(console.log("response failed"))
+//             return response.json()
+//     })
+//     .then(users=>{
+//         console.log(users.map((data)=>console.log(data)))
+//         return users;
+//     })
+//     .then(users=>{
+//         console.log(users.map((show)=>console.log(show.email)))
+//     })
+//     .catch(err=>console.error(err))
+
+fetch('https://dummyjson.com/products')
+    .then(res=>{
+        if(!res.ok) throw new Error(console.log("response failed"))
+            return res.json()
+    })
+    .then(photos=>{
+        console.log(photos);
+        // console.log(photos.products.map((data)=>console.log(data.images)))
+        const image = document.getElementById("photoimage");
+        photos.products.forEach(data => {
+            const div = document.createElement("div");
+            div.innerHTML = `<a href="http://127.0.0.1:5500/Register/Promises/E-commernce/Details.html?id=${data.id}"><img src = "${data.images[0]}"/></a>
+                            <p>${data.title}</p>`
+            image.appendChild(div);
+        }); 
+    })
+
+// fetch('https://dummyjson.com/products/1')
+//     .then(res=>{
+//         if(!res.ok) throw new Error(console.log("response failed"))
+//             return res.json()
+//     })
+// //     // .then(photos=>{
+// //     //     console.log(photos);
+// //     //     console.log(photos.products.map((data)=>console.log(data.images)))
+// //     //     // const image = document.getElementById("alldata");
+// //     //     // photos.products.forEach(data => {
+// //     //     //     const div = document.createElement("div");
+// //     //     //     div.innerHTML = `<img src = "${data.images}"/>`
+// //     //     //     image.appendChild(div);
+// //     //     // });
+// //     // })
+//         .then(photos=>{
+//             // console.log(photos.products.map((data)=>console.log(data)));        
+//             // console.log(photos.images[0]);
+//             const image = document.getElementById("alldata");
+//             const div = document.createElement("div");
+//             div.innerHTML =  `<img src = "${photos.images[0]}">
+//                             <p>${photos.title}</p>
+//                             <p>${photos.description}</p>
+//                             <p>${photos.price}</p>
+//                             <p>${photos.rating}</p>
+//                             <p>${photos.stock}</p>`
+//             image.appendChild(div);
+//         })
+
+
+</script>
+

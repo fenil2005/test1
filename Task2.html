@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DummyJSON Product Search</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f4f4f4;
+            padding:30px;
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:20px;
+        }
+
+        .search-box{
+            width:400px;
+            margin:20px auto;
+        }
+
+        .search-box input{
+            width:100%;
+            padding:12px;
+            font-size:18px;
+            border:1px solid gray;
+            border-radius:5px;
+            outline:none;
+        }
+
+        #products{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+            margin-top:30px;
+        }
+
+        .card{
+            background:white;
+            border-radius:10px;
+            padding:15px;
+            box-shadow:0 2px 8px rgba(0,0,0,.2);
+            text-align:center;
+        }
+
+        .card img{
+            width:150px;
+            height:150px;
+            object-fit:contain;
+        }
+
+        .card h3{
+            margin:10px 0;
+        }
+
+        .price{
+            color:green;
+            font-size:20px;
+            font-weight:bold;
+        }
+
+        .category{
+            color:gray;
+            margin:8px 0;
+        }
+
+        .rating{
+            color:orange;
+        }
+
+        #message{
+            text-align:center;
+            font-size:22px;
+            margin-top:40px;
+            color:red;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <h1>DummyJSON Products</h1>
+
+    <div class="search-box">
+        <input
+            type="text"
+            id="search"
+            placeholder="Search Product..."
+        >
+    </div>
+
+    <div id="message"></div>
+
+    <div id="products"></div>
+
+    <script>
+const productContainer = document.getElementById("products");
+const searchInput = document.getElementById("search");
+const message = document.getElementById("message");
+
+let allProducts = [];
+
+function getProducts() {
+
+    fetch("https://dummyjson.com/products")
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            allProducts = data.products;
+            displayProducts(allProducts);
+        })
+        .catch(function(error) {
+            console.log(error);
+            message.innerText = "Unable to load products.";
+        });
+
+}
+
+getProducts();
+
+function displayProducts(products){
+
+    productContainer.innerHTML = "";
+
+    message.innerHTML = "";
+
+    if(products.length === 0){
+
+        message.innerHTML = "No Products Found";
+
+        return;
+
+    }
+
+    products.forEach((product)=>{
+
+        productContainer.innerHTML += `
+
+        <div class="card">
+
+            <img src="${product.thumbnail}" alt="${product.title}">
+
+            <h3>${product.title}</h3>
+
+            <p class="category">${product.category}</p>
+
+            <p class="price">$${product.price}</p>
+
+            <p class="rating">⭐ ${product.rating}</p>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+searchInput.addEventListener("input", function(){
+
+    const keyword = searchInput.value.toLowerCase().trim();
+
+    const filteredProducts = allProducts.filter((product)=>{
+
+        return (
+
+            product.title.toLowerCase().includes(keyword) ||
+
+            product.category.toLowerCase().includes(keyword) ||
+
+            product.brand?.toLowerCase().includes(keyword)
+
+        );
+
+    });
+
+    displayProducts(filteredProducts);
+
+}); 
+    </script>
+
+</body>
+</html>

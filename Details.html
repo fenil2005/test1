@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <section>
+        <div id="alldata" class="photosinfo">
+
+        </div>
+    </section> 
+</body>
+</html>
+<script>
+    const querystr = window.location.search;
+    const formaturl = new URLSearchParams(querystr);
+    const newthing = formaturl.get("id");
+    fetch(`https://dummyjson.com/products/${newthing}`)
+    .then(res=>{
+        if(!res.ok) throw new Error(console.log("response failed"))
+            return res.json()
+    })
+    .then(photos=>{
+            // console.log(photos.products.map((data)=>console.log(data)));        
+            // console.log(photos.images[0]);
+            const image = document.getElementById("alldata");
+            const div = document.createElement("div");
+            div.innerHTML =  `<img src = "${photos.images[0]}">
+                            <p>${photos.title}</p>
+                            <p>${photos.description}</p>
+                            <p>${photos.price}</p>
+                            <p>${photos.rating}</p>
+                            <p>${photos.stock}</p>`
+            image.appendChild(div);   
+        })
+
+</script>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f4f4f4;
+            padding:30px;
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:20px;
+        }
+
+        .search-box{
+            width:400px;
+            margin:20px auto;
+        }
+
+        .search-box input{
+            width:100%;
+            padding:12px;
+            font-size:18px;
+            border:1px solid gray;
+            border-radius:5px;
+            outline:none;
+        }
+
+        #products{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+            margin-top:30px;
+        }
+
+        .card{
+            background:white;
+            border-radius:10px;
+            padding:15px;
+            box-shadow:0 2px 8px rgba(0,0,0,.2);
+            text-align:center;
+        }
+
+        .card img{
+            width:150px;
+            height:150px;
+            object-fit:contain;
+        }
+
+        .card h3{
+            margin:10px 0;
+        }
+
+        .price{
+            color:green;
+            font-size:20px;
+            font-weight:bold;
+        }
+
+        .category{
+            color:gray;
+            margin:8px 0;
+        }
+
+        .rating{
+            color:orange;
+        }
+
+        #message{
+            text-align:center;
+            font-size:22px;
+            margin-top:40px;
+            color:red;
+        }
+
+    </style>
+</head>
+<body>
+    <div>
+        <input type="text" id="search" placeholder="search products">
+    </div>
+    <div id="message">
+        
+    </div>
+    <div id="products">
+
+    </div>
+</body>
+</html>
+<script>
+   const search = document.getElementById("search");
+   const message = document.getElementById("message");
+   const productall = document.getElementById("products");
+   let allproducts = [];
+//    console.log(allproducts);
+
+    function getproducts () {
+        fetch('https://dummyjson.com/products')
+            .then(res=>{
+                if(!res.ok) throw new Error(console.log("response failed"))
+                    return res.json()
+        })
+            .then(data => {
+                // console.log(data.products);
+                allproducts = data.products;
+                displayproduct(allproducts); 
+            })
+            .catch (err => {
+                console.log("Something error" , err);
+            }) 
+    }
+    
+    getproducts();
+
+    function displayproduct (abc) {
+        // console.log(abc);
+        // productall.innerHTML = ``
+        // message.innerHTML = ``
+        console.log(abc);
+        // productall.innerHTML = "";
+        abc.forEach((data1) => {
+            // console.log(data1);
+            productall.innerHTML += `
+                <div class="card">
+                        <img src = "${data1.thumbnail}">
+                        <p>${data1.title}</p>
+                    </div>`
+        });
+    }
+    // search.addEventListener("input" , function (){
+    //     const keyword = search.value.toLowerCase().trim();
+    //     const filterproduct = allproducts.filter((data2)=>{
+    //         console.log(data2.title);
+    //         return (
+    //             data2.title.toLowerCase().includes(keyword)
+    //         )
+    //     })
+    //     displayproduct(filterproduct);
+    // })
+        search.addEventListener("input", function(){
+
+    const keyword = search.value.toLowerCase().trim();
+    console.log(keyword);
+    const filteredProducts = allproducts.filter((product)=>{
+
+        return (
+
+            product.title.toLowerCase().includes(keyword) 
+
+            // product.category.toLowerCase().includes(keyword) ||
+
+            // product.brand?.toLowerCase().includes(keyword)
+
+        );
+
+    });
+    console.log(filteredProducts);
+    displayproduct(filteredProducts);
+
+});
+
+</script>
